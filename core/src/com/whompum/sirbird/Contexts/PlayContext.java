@@ -2,13 +2,41 @@ package com.whompum.sirbird.Contexts;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
+import com.whompum.sirbird.Renderer.GameRenderer;
+import com.whompum.sirbird.GameWorld;
 import com.whompum.sirbird.Logger;
+import com.whompum.sirbird.Renderer.RendererHelper;
+import com.whompum.sirbird.UserInput.InputHelper;
 
-
+/**
+ * The main screen where the user plays the game in.
+ * The Rendering / game-play logic is handled by
+ * {@link RendererHelper} and {@link GameWorld} respectively.
+ *
+ */
 public class PlayContext implements Screen {
 
+    public static final int DIMENSION_WIDTH = 137;
+    public static final int DIMENSION_HEIGHT = 460;
+
     private final Logger logger = new Logger();
+
+    private GameWorld world;
+    private RendererHelper renderer;
+
+    public PlayContext(){
+        world = new GameWorld( getCY() );
+        renderer = new GameRenderer( world );
+
+        Gdx.input.setInputProcessor(
+                new InputHelper( world.getBird() ).getInputProcessor()
+        );
+
+    }
+
+    private int getCY(){
+        return (Gdx.graphics.getHeight() / (Gdx.graphics.getWidth() / DIMENSION_WIDTH)) >> 1;
+    }
 
     @Override
     public void show() {
@@ -22,15 +50,8 @@ public class PlayContext implements Screen {
      */
     @Override
     public void render(float delta) {
-        logger.log( PlayContext.class, "render()");
-        // Sets a Color to Fill the Screen with (RGB = 10, 15, 230), Opacity of 1 (100%)
-        Gdx.gl.glClearColor( 10/74F, 10/73F, 10/71F, 1f );
-        // Fills the screen with the selected color
-        Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT );
-
-        /* Uncomment to view FPS
-            logger.log( PlayContext.class, "render() FRAME_PER_SECOND: " + (1 / delta) );
-        */
+        world.update( delta );
+        renderer.render();
     }
 
     @Override
