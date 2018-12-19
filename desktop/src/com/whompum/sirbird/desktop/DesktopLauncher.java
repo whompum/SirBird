@@ -9,10 +9,26 @@ public class DesktopLauncher {
 	public static final String APP_TITLE = "SirBird";
 
 	public static void main (String[] arg) {
+		new LwjglApplication( new SirBirdGame(), configure() );
+	}
+
+	private static LwjglApplicationConfiguration configure(){
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = APP_TITLE;
+
+		configureDimension( config );
+		configureTitle( config );
+
+		return config;
+	}
+
+	private static void configureDimension(final LwjglApplicationConfiguration config){
 		config.width = 360;
 		config.height = 560;
-		new LwjglApplication(new SirBirdGame(), config);
 	}
+
+	private static void configureTitle(final LwjglApplicationConfiguration config){
+		config.title = APP_TITLE;
+
+	}
+
 }
