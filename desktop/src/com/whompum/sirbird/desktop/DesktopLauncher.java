@@ -2,6 +2,7 @@ package com.whompum.sirbird.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.whompum.sirbird.Contexts.PlayContext;
 import com.whompum.sirbird.SirBirdGame;
 
 public class DesktopLauncher {
@@ -22,13 +23,12 @@ public class DesktopLauncher {
 	}
 
 	private static void configureDimension(final LwjglApplicationConfiguration config){
-		config.width = 360;
-		config.height = 560;
+		config.width = PlayContext.DIMENSION_WIDTH;
+		config.height = PlayContext.DIMENSION_HEIGHT;
 	}
 
 	private static void configureTitle(final LwjglApplicationConfiguration config){
 		config.title = APP_TITLE;
-
 	}
 
 }
