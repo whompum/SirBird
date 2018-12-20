@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static final String ASSET_PATH = "data/assets_group.png"; //relative path under android/assets
+    public static final String ASSET_PATH = "data/main_sheet.png"; //relative path under android/assets
 
-    private static Texture assetContainer;
+    private static Texture spriteSheet;
 
     private static TextureRegion background, grass;
 
@@ -26,30 +26,30 @@ public class AssetLoader {
      */
     public static void load(){
 
-        assetContainer = new Texture( Gdx.files.internal( ASSET_PATH) );
-        assetContainer.setFilter( TextureFilter.Nearest, TextureFilter.Nearest );
+        spriteSheet = new Texture( Gdx.files.internal( ASSET_PATH ) );
+        spriteSheet.setFilter( TextureFilter.Nearest, TextureFilter.Nearest );
 
-        background = new TextureRegion( assetContainer, 0, 0, 136, 43 );
+        background = new TextureRegion( spriteSheet, 0, 0, 136, 43 );
         flipY( background );
 
-        grass = new TextureRegion( assetContainer, 0, 43, 143, 11 );
+        grass = new TextureRegion( spriteSheet, 0, 43, 143, 11 );
         flipY( grass );
 
-        birdDown = new TextureRegion( assetContainer, 136, 0, 17, 12 );
+        birdDown = new TextureRegion( spriteSheet, 136, 0, 17, 12 );
         flipY( birdDown );
 
-        birdStable = new TextureRegion( assetContainer, 153, 0, 17, 12 );
+        birdStable = new TextureRegion( spriteSheet, 153, 0, 17, 12 );
         flipY( birdStable );
 
-        birdUp = new TextureRegion( assetContainer, 170, 0, 17, 12 );
+        birdUp = new TextureRegion( spriteSheet, 170, 0, 17, 12 );
         flipY( birdUp );
 
-        pipeHeadUp = new TextureRegion( assetContainer, 192, 0, 24, 14 );
+        pipeHeadUp = new TextureRegion( spriteSheet, 192, 0, 24, 14 );
 
         pipeHeadDown = new TextureRegion( pipeHeadUp ); //Cpy pipeHeadUp and flip it
         flipY( pipeHeadDown );
 
-        pipeBody = new TextureRegion( assetContainer, 136, 16, 22, 3 );
+        pipeBody = new TextureRegion( spriteSheet, 136, 16, 22, 3 );
             //Flip?
 
         initBirdAnimation();
@@ -57,8 +57,8 @@ public class AssetLoader {
     }
 
     public static void dispose() {
-        // We must dispose of the assetContainer when we are finished.
-        assetContainer.dispose();
+        // We must dispose of the spriteSheet when we are finished.
+        spriteSheet.dispose();
     }
 
     private static void flipY(final TextureRegion region){
