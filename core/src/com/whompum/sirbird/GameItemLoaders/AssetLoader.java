@@ -8,17 +8,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
 
-    public static final String ASSET_PATH = "data/main_sheet.png"; //relative path under android/assets
+    public static final String ASSET_PATH = "sprites.png";
 
-    private static Texture spriteSheet;
+    public static Texture spriteSheet;
 
-    private static TextureRegion background, grass;
+    public static TextureRegion background, grass;
 
-    private static TextureRegion birdUp, birdDown, birdStable;
+    public static TextureRegion birdUp, birdDown, birdStable;
 
-    private static TextureRegion pipeBody, pipeHeadUp, pipeHeadDown;
+    public static TextureRegion pipeBody, pipeHeadUp, pipeHeadDown;
 
-    private static Animation<TextureRegion[]> birdAnimation;
+    public static Animation<TextureRegion> birdAnimation;
 
     /**
      * Loads up a batch of assets and then cuts out the items like
