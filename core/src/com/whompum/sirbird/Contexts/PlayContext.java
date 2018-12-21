@@ -6,6 +6,7 @@ import com.whompum.sirbird.Renderer.GameRenderer;
 import com.whompum.sirbird.GameWorld;
 import com.whompum.sirbird.Logger;
 import com.whompum.sirbird.Renderer.RendererHelper;
+import com.whompum.sirbird.SirBirdGame;
 import com.whompum.sirbird.UserInput.InputHelper;
 
 /**
@@ -16,17 +17,19 @@ import com.whompum.sirbird.UserInput.InputHelper;
  */
 public class PlayContext implements Screen {
 
-    public static final int DIMENSION_WIDTH = 137;
-    public static final int DIMENSION_HEIGHT = 460;
-
     private final Logger logger = new Logger();
 
     private GameWorld world;
     private RendererHelper renderer;
 
+    private float currentRuntime;
+
     public PlayContext(){
-        world = new GameWorld( getCY() );
-        renderer = new GameRenderer( world );
+
+        final int cY = getCY();
+
+        world = new GameWorld( cY, getHeight() );
+        renderer = new GameRenderer( world, getHeight(), cY );
 
         Gdx.input.setInputProcessor(
                 new InputHelper( world.getBird() ).getInputProcessor()
@@ -35,7 +38,11 @@ public class PlayContext implements Screen {
     }
 
     private int getCY(){
-        return (Gdx.graphics.getHeight() / (Gdx.graphics.getWidth() / DIMENSION_WIDTH)) >> 1;
+        return getHeight() >> 1;
+    }
+
+    private int getHeight(){
+        return (int)( SirBirdGame.getDeviceHeight() / (SirBirdGame.getDeviceWidth() / 136) );
     }
 
     @Override
@@ -50,8 +57,9 @@ public class PlayContext implements Screen {
      */
     @Override
     public void render(float delta) {
+        currentRuntime+=delta;
         world.update( delta );
-        renderer.render();
+        renderer.render( currentRuntime );
     }
 
     @Override
