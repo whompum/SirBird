@@ -11,8 +11,8 @@ public class GameWorld {
      *
      * @param cY the centerY value of the screen.
      */
-    public GameWorld(final int cY){
-        bird = new SirBird( 17, 12, 33, cY );
+    public GameWorld(final int cY, final int screenHeight){
+        bird = new SirBird( 17, 12, 33, cY, screenHeight );
     }
 
     public void update(float millisSincelastUpdate) {
