@@ -23,8 +23,8 @@ public class DesktopLauncher {
 	}
 
 	private static void configureDimension(final LwjglApplicationConfiguration config){
-		config.width = PlayContext.DIMENSION_WIDTH;
-		config.height = PlayContext.DIMENSION_HEIGHT;
+		config.width = SirBirdGame.DIMENSION_WIDTH;
+		config.height = SirBirdGame.DIMENSION_HEIGHT;
 	}
 
 	private static void configureTitle(final LwjglApplicationConfiguration config){
