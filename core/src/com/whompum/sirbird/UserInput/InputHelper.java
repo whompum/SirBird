@@ -8,7 +8,7 @@ public class InputHelper{
     private SirBird obj;
 
     public InputHelper(final SirBird obj){
-
+        this.obj = obj;
     }
 
     private boolean onTouch(){
