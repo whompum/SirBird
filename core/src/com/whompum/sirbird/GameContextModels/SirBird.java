@@ -75,7 +75,7 @@ public class SirBird {
 
         if( isDescending() ){
 
-            currentAngle += (ROTATION_ANGLE * deltaFallSpeed) * 0.5F; //Scale by half to slow down the rotation
+            currentAngle += (ROTATION_ANGLE * deltaFallSpeed) * 0.3F; //Scale by half to slow down the rotation
 
             if( currentAngle >= ROTATION_ANGLE )
                 currentAngle = ROTATION_ANGLE;
