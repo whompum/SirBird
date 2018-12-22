@@ -3,11 +3,14 @@ package com.whompum.sirbird.Renderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.whompum.sirbird.GameContextModels.SirBird;
 import com.whompum.sirbird.GameItemLoaders.AssetLoader;
 import com.whompum.sirbird.GameWorld;
+import org.w3c.dom.Text;
 
 /**
  * Helper class to render game objects such as SirBird or the Castles
@@ -23,6 +26,11 @@ public class GameRenderer implements RendererHelper{
     private int height, cY;
 
     private SirBird bird;
+
+    private TextureRegion stableBird = AssetLoader.birdStable;
+    private Animation<TextureRegion> birdAnim = AssetLoader.birdAnimation;
+    private TextureRegion grass = AssetLoader.grass;
+    private TextureRegion background = AssetLoader.background;
 
     public GameRenderer(final GameWorld world, final int height, final int cY){
         this.world = world;
@@ -51,23 +59,19 @@ public class GameRenderer implements RendererHelper{
 
         shapeRenderer.begin( ShapeRenderer.ShapeType.Filled );
 
-        // Draw Background color
+        //Background color
         shapeRenderer.setColor(55 / 255.0f, 80 / 255.0f, 100 / 255.0f, 1);
         shapeRenderer.rect(0, 0, 136, cY + 66);
 
-        batcher.begin();
-        batcher.draw( AssetLoader.grass , 0, cY+66, 136, 11 );
-        batcher.end();
-
-        // Draw Dirt
+        //Dirt. REPLACE WITH SPRITES
         shapeRenderer.setColor(147 / 255.0f, 80 / 255.0f, 27 / 255.0f, 1);
         shapeRenderer.rect(0, cY + 77, 136, 52);
-
-        // End ShapeRenderer
         shapeRenderer.end();
 
-        // Begin SpriteBatch
         batcher.begin();
+
+        batcher.draw( grass , 0, cY+66, 136, 11 );
+
         // Disable transparency
         // This is good for performance when drawing images that do not require
         // transparency.
@@ -77,20 +81,24 @@ public class GameRenderer implements RendererHelper{
         // The bird needs transparency, so we enable that again.
         batcher.enableBlending();
 
-        batcher.draw(
-                ( bird.isDescending() ) ? AssetLoader.birdStable : AssetLoader.birdAnimation.getKeyFrame( runTime ),
-                bird.getX(),
-                bird.getY(),
-         bird.getWidth() / 2.0f,
-         bird.getHeight() / 2.0f,
-                bird.getWidth(),
-                bird.getHeight(),
-          1,
-          1,
-                bird.getRotation());
+        drawSirBird( batcher, ( bird.isDescending() ) ? AssetLoader.birdStable : AssetLoader.birdAnimation.getKeyFrame( runTime ) );
 
         // End SpriteBatch
         batcher.end();
+
+    }
+
+    private void drawSirBird( final SpriteBatch batcher, final TextureRegion region){
+
+        batcher.draw( region,
+                      bird.getX(),
+                      bird.getY(),
+                      bird.getWidth() * 0.5F,
+                      bird.getHeight() * 0.5F,
+                      bird.getWidth(),
+                      bird.getHeight(),
+                      1, 1,
+                      bird.getRotation() );
 
     }
 
