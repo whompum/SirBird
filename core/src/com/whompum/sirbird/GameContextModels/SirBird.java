@@ -2,11 +2,13 @@ package com.whompum.sirbird.GameContextModels;
 
 import com.badlogic.gdx.math.Vector2;
 import com.whompum.sirbird.Logger;
+import com.whompum.sirbird.Scrolling.OnScrollChangeListener;
+import com.whompum.sirbird.Scrolling.Scroller;
 
 /**
  * The modeled state of the Bird the user interacts with
  */
-public class SirBird {
+public class SirBird implements OnScrollChangeListener{
 
     public static final int TERMINAL_VELOCITY = 7; //How many units to fall per update,
     public static final int VERTICAL_JUMP_UNITS = -4; //How many units to raise per update
@@ -15,10 +17,10 @@ public class SirBird {
 
     private int width, height;
 
+    private Scroller scroller;
+
     //Vector2 objects will simply hold X,Y pairs in our situation
     private Vector2 currPos;
-
-    private float currentVelocity;
 
     private float currentAngle;
 
@@ -32,50 +34,31 @@ public class SirBird {
         currPos = new Vector2( startingXPos, startingYPos );
 
         this.contextHeight = contextHeight;
+
+        scroller = new Scroller( this, false, TERMINAL_VELOCITY );
+
     }
 
-    /**
-     * Updates the current position of SirBird based on the current velocity
-     *
-     * Basically how it works is we take the deltaFrameUpdate (millis since last update)
-     * and find out how much our velocity should increase / decrease by scaling the DECELERATION_CIEL by it.
-     *
-     * We then append that value to the currVelocity to find our new fall speed (in units)
-     *
-     * After we find our new velocity we then scale it by deltaFrameUpdate to find how many units the bird should move
-     *
-     * Then simply append that result to our current position
-     *
-     * @param deltaFrameUpdate
-     */
-    public void updatePos(final float deltaFrameUpdate){
-        setCurrentVelocity( getDeltaFallSpeed( deltaFrameUpdate ) );
-        currPos.add( 0, currentVelocity );
+    @Override
+    public void onNewDeltaPos(float deltaPos) {
+        currPos.add( 0, deltaPos );
 
         if( isTouchingCiel() ){
             currPos.y = 0;
-            restartVelocity();
+            restartVelocity(); //Avoids hangtime because without, the velocity would need to climb back up to (> 0) again
         } else if( isTouchingFloor() ){
             currPos.y = contextHeight - height;
-            currentVelocity = 0F;
+            restartVelocity();
         }
 
     }
 
-    private float getDeltaFallSpeed(final float deltaFrameUpdate){
-        return TERMINAL_VELOCITY * deltaFrameUpdate;
-    }
-
-    private void setCurrentVelocity(final float deltaFallSpeed){
-
-        this.currentVelocity += deltaFallSpeed;
-
-        if( currentVelocity > TERMINAL_VELOCITY )
-            currentVelocity = TERMINAL_VELOCITY;
+    public void updatePos(final float deltaFrameUpdate){
+        scroller.update( deltaFrameUpdate );
 
         if( isDescending() ){
 
-            currentAngle += (ROTATION_ANGLE * deltaFallSpeed) * 0.3F; //Scale by half to slow down the rotation
+            currentAngle += (ROTATION_ANGLE * deltaFrameUpdate);
 
             if( currentAngle >= ROTATION_ANGLE )
                 currentAngle = ROTATION_ANGLE;
@@ -86,7 +69,7 @@ public class SirBird {
     }
 
     public void onClick() {
-       currentVelocity = VERTICAL_JUMP_UNITS;
+       scroller.setCurrentScrollVelocity( VERTICAL_JUMP_UNITS );
        currentAngle = -90;
     }
 
@@ -99,11 +82,11 @@ public class SirBird {
     }
 
     public boolean isDescending(){
-        return currentVelocity > 0;
+        return scroller.getCurrentScrollVelocity() > 0;
     }
 
     private void restartVelocity(){
-        currentVelocity = 0;
+        scroller.setCurrentScrollVelocity( 0F );
     }
 
     public float getX() {
