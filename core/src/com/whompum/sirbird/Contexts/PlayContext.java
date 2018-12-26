@@ -59,7 +59,7 @@ public class PlayContext implements Screen {
     public void render(float delta) {
         currentRuntime+=delta;
         world.update( delta );
-        renderer.render( currentRuntime );
+        renderer.render( delta );
     }
 
     @Override
