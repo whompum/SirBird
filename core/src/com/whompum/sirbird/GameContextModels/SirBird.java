@@ -10,8 +10,8 @@ import com.whompum.sirbird.Scrolling.Scroller;
  */
 public class SirBird implements OnScrollChangeListener{
 
-    public static final int TERMINAL_VELOCITY = 7; //How many units to fall per update,
-    public static final int VERTICAL_JUMP_UNITS = -4; //How many units to raise per update
+    public static final int TERMINAL_VELOCITY = 9; //How many units to fall per update,
+    public static final int VERTICAL_JUMP_UNITS = -3; //How many units to raise per update
 
     public static final int ROTATION_ANGLE = 90;
 
